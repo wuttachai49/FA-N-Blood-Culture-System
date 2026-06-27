@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FA-N Principle Breakdown - The Verge Design</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Space Grotesk', -apple-system, system-ui, sans-serif;
+            line-height: 1.6;
+            color: #ffffff;
+            background: #131313;
+            min-height: 100vh;
+        }
+
+        .mono-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 48px 24px;
+        }
+
+        header {
+            margin-bottom: 48px;
+            border-bottom: 1px solid #3cffd0;
+            padding-bottom: 32px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 56px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        header p {
+            font-size: 16px;
+            color: #3cffd0;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+
+        .nav-link {
+            display: inline-block;
+            margin: 16px 12px 16px 0;
+            padding: 10px 20px;
+            border: 1px solid #3cffd0;
+            border-radius: 20px;
+            color: #3cffd0;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            transition: all 150ms ease;
+        }
+
+        .nav-link:hover {
+            background: #3cffd0;
+            color: #000000;
+        }
+
+        .section {
+            background: #131313;
+            margin-bottom: 40px;
+            border-radius: 20px;
+            border: 1px solid #ffffff;
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: #2d2d2d;
+            color: #3cffd0;
+            padding: 28px;
+            font-size: 24px;
+            font-weight: 700;
+            border-bottom: 1px solid #3cffd0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-content {
+            padding: 32px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 24px 0;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin: 24px 0;
+        }
+
+        .card {
+            background: #131313;
+            border: 1px solid #ffffff;
+            border-radius: 20px;
+            padding: 20px;
+            transition: border-color 150ms ease;
+        }
+
+        .card:hover {
+            border-color: #3cffd0;
+        }
+
+        .card h3 {
+            color: #3cffd0;
+            margin-bottom: 10px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .card p {
+            color: #949494;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .chart-container {
+            background: #2d2d2d;
+            padding: 24px;
+            border-radius: 12px;
+            margin: 24px 0;
+            border: 1px solid #3cffd0;
+            text-align: center;
+        }
+
+        .chart-container h4 {
+            color: #3cffd0;
+            margin-bottom: 16px;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+
+        .svg-chart {
+            max-width: 100%;
+            height: auto;
+            margin: 16px 0;
+        }
+
+        .detection-time {
+            display: inline-block;
+            background: #3cffd0;
+            color: #000000;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 11px;
+            margin: 8px 0;
+        }
+
+        .highlight-box {
+            background: #2d2d2d;
+            border-left: 4px solid #3cffd0;
+            border-radius: 4px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        .highlight-box strong {
+            color: #3cffd0;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border: 1px solid #3cffd0;
+            border-radius: 8px;
+        }
+
+        .comparison-table th {
+            background: #2d2d2d;
+            color: #3cffd0;
+            padding: 14px;
+            text-align: left;
+            font-weight: 700;
+            border-bottom: 1px solid #3cffd0;
+            font-size: 13px;
+        }
+
+        .comparison-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #3cffd0;
+            color: #ffffff;
+            font-size: 13px;
+        }
+
+        .timeline-item {
+            margin: 16px 0;
+            padding: 16px;
+            border: 1px solid #3cffd0;
+            border-radius: 12px;
+            background: #131313;
+        }
+
+        .timeline-item h5 {
+            color: #3cffd0;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+
+        footer {
+            background: #131313;
+            color: #949494;
+            text-align: center;
+            padding: 32px;
+            border-top: 1px solid #3cffd0;
+            margin-top: 48px;
+            font-size: 12px;
+        }
+
+        footer p {
+            margin: 6px 0;
+        }
+
+        footer a {
+            color: #3cffd0;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 36px;
+            }
+
+            .section-header {
+                font-size: 18px;
+            }
+
+            .container {
+                padding: 24px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index-theverge.html" class="nav-link">← Back to Main</a>
+            <h1>Principle Breakdown</h1>
+            <p>Detection & Blood Volume Measurement Analysis</p>
+        </header>
+
+        <!-- Blood Volume Detection -->
+        <div class="section">
+            <div class="section-header">
+                <span>⚖️</span>
+                Blood Volume Detection System
+            </div>
+            <div class="section-content">
+                <p style="margin-bottom: 20px; color: #949494;">
+                    FA-N120 and FA-N240 models include automated sample volume detection ensuring adequate blood for optimal culture recovery.
+                </p>
+
+                <div class="chart-container">
+                    <h4>Optical Measurement Principle</h4>
+                    <svg class="svg-chart" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="50" y="50" width="100" height="100" fill="#3cffd0" stroke="#ffffff" stroke-width="1" rx="3" />
+                        <text x="100" y="105" font-size="12" font-weight="bold" text-anchor="middle" fill="#000000">Bottle</text>
+
+                        <text x="200" y="100" font-size="18" text-anchor="middle" fill="#3cffd0">→</text>
+
+                        <rect x="250" y="50" width="120" height="100" fill="#2d2d2d" stroke="#3cffd0" stroke-width="2" rx="3" />
+                        <circle cx="310" cy="75" r="5" fill="#ffeb3b" />
+                        <line x1="315" y1="75" x2="345" y2="75" stroke="#3cffd0" stroke-width="2" stroke-dasharray="3,3" />
+                        <circle cx="360" cy="75" r="5" fill="#3cffd0" />
+                        <text x="310" y="120" font-size="11" text-anchor="middle" fill="#949494">Sensor</text>
+
+                        <text x="420" y="100" font-size="18" text-anchor="middle" fill="#3cffd0">→</text>
+
+                        <rect x="470" y="60" width="100" height="40" fill="#3cffd0" stroke="#ffffff" stroke-width="1" rx="2" />
+                        <text x="520" y="85" font-size="12" font-weight="bold" text-anchor="middle" fill="#000000">Result</text>
+                    </svg>
+                </div>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Specification</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Optimal Fill</strong></td>
+                            <td>5-10 mL (fill to mark line)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Minimum Volume</strong></td>
+                            <td>5 mL - reduces sensitivity if less</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Measurement Accuracy</strong></td>
+                            <td>±0.5 mL precision</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Collection Mode</strong></td>
+                            <td>Automatic at time of loading</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="highlight-box">
+                    <strong>⚠️ Clinical Alert:</strong> Under-filled bottles (&lt;5 mL) are a major cause of false-negative blood cultures. The FA-N120/FA-N240 volume detection module prevents this automatically.
+                </div>
+            </div>
+        </div>
+
+        <!-- Growth Curve Analysis -->
+        <div class="section">
+            <div class="section-header">
+                <span>📈</span>
+                Bacterial Growth Curve Phases
+            </div>
+            <div class="section-content">
+                <p style="margin-bottom: 24px; color: #949494;">
+                    The FA-N Series detects growth starting from LOG PHASE, enabling early results in 1 hour for rapid growers.
+                </p>
+
+                <div class="grid-2">
+                    <div class="timeline-item">
+                        <h5>LAG PHASE (0-2 hours)</h5>
+                        <p style="color: #949494; font-size: 13px;">Bacteria adjust to environment. Minimal cell division. <strong style="color: #ffffff;">Not detected.</strong></p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <h5>LOGARITHMIC (2-6 hours)</h5>
+                        <p style="color: #949494; font-size: 13px;">Rapid multiplication. CO₂ production. <span class="detection-time">1-4 hours</span></p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <h5>STATIONARY (6-7+ hours)</h5>
+                        <p style="color: #949494; font-size: 13px;">Growth stabilizes. <strong style="color: #ffffff;">Confirmed positive</strong></p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <h5>DEATH PHASE (7+ hours)</h5>
+                        <p style="color: #949494; font-size: 13px;">Cell death. <strong style="color: #ffffff;">Maintained positive</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detection Algorithms -->
+        <div class="section">
+            <div class="section-header">
+                <span>⚡</span>
+                Detection Algorithms
+            </div>
+            <div class="section-content">
+                <div class="grid-3">
+                    <div class="card">
+                        <h3>🚀 Early Acceleration</h3>
+                        <p><span class="detection-time">1h 20min</span></p>
+                        <p>Slope acceleration for short lag phase organisms.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>⚡ Early Rate</h3>
+                        <p><span class="detection-time">1 hour</span></p>
+                        <p>Slope change for bottles in growth phase.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>📊 Threshold</h3>
+                        <p><span class="detection-time">1h 40min</span></p>
+                        <p>Absolute reflectance threshold detection.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>📈 Normal Rate</h3>
+                        <p><span class="detection-time">3h 40min</span></p>
+                        <p>Standard growth pattern detection.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>🐢 Slow Growth</h3>
+                        <p><span class="detection-time">6-7+ hours</span></p>
+                        <p>Fastidious organisms and slow growers.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>🎯 Combined</h3>
+                        <p><span class="detection-time">Optimal</span></p>
+                        <p>Multi-algorithm reporting.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Comparison -->
+        <div class="section">
+            <div class="section-header">
+                <span>⚖️</span>
+                Model Comparison
+            </div>
+            <div class="section-content">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>FA-N60</th>
+                            <th>FA-N120</th>
+                            <th>FA-N240</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Capacity</strong></td>
+                            <td>60 bottles</td>
+                            <td>120 bottles</td>
+                            <td>240 bottles</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Volume Detection</strong></td>
+                            <td>Manual</td>
+                            <td>✓ Automatic</td>
+                            <td>✓ Automatic</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Temperature</strong></td>
+                            <td>37°C ±0.5°C</td>
+                            <td>37°C ±0.5°C</td>
+                            <td>37°C ±0.5°C</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Early Detection</strong></td>
+                            <td><span class="detection-time">1 hour</span></td>
+                            <td><span class="detection-time">1 hour</span></td>
+                            <td><span class="detection-time">1 hour</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>All Algorithms</strong></td>
+                            <td>✓ Yes</td>
+                            <td>✓ Yes</td>
+                            <td>✓ Yes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer>
+            <p><strong>FA-N System Principle Breakdown</strong></p>
+            <p><a href="index-theverge.html">← Back to Main Page</a></p>
+            <p style="margin-top: 16px;">© 2025 SE Supply. Information based on clinical research and product documentation.</p>
+        </footer>
+    </div>
+</body>
+</html>
