@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FA-N Growth Curve Analysis - The Verge Design</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Space Grotesk', -apple-system, system-ui, sans-serif;
+            line-height: 1.6;
+            color: #ffffff;
+            background: #131313;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 48px 24px;
+        }
+
+        header {
+            margin-bottom: 48px;
+            border-bottom: 1px solid #3cffd0;
+            padding-bottom: 32px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 56px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        header p {
+            font-size: 16px;
+            color: #3cffd0;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+
+        .nav-link {
+            display: inline-block;
+            margin: 16px 12px 16px 0;
+            padding: 10px 20px;
+            border: 1px solid #3cffd0;
+            border-radius: 20px;
+            color: #3cffd0;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            transition: all 150ms ease;
+        }
+
+        .nav-link:hover {
+            background: #3cffd0;
+            color: #000000;
+        }
+
+        .section {
+            background: #131313;
+            margin-bottom: 40px;
+            border-radius: 20px;
+            border: 1px solid #ffffff;
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: #2d2d2d;
+            color: #3cffd0;
+            padding: 28px;
+            font-size: 24px;
+            font-weight: 700;
+            border-bottom: 1px solid #3cffd0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-content {
+            padding: 32px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 24px 0;
+        }
+
+        .card {
+            background: #131313;
+            border: 1px solid #ffffff;
+            border-radius: 20px;
+            padding: 20px;
+            transition: border-color 150ms ease;
+        }
+
+        .card:hover {
+            border-color: #3cffd0;
+        }
+
+        .card h3 {
+            color: #3cffd0;
+            margin-bottom: 10px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .card p {
+            color: #949494;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .chart-container {
+            background: #2d2d2d;
+            padding: 24px;
+            border-radius: 12px;
+            margin: 24px 0;
+            border: 1px solid #3cffd0;
+            text-align: center;
+        }
+
+        .chart-container h4 {
+            color: #3cffd0;
+            margin-bottom: 16px;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+
+        .svg-chart {
+            max-width: 100%;
+            height: auto;
+            margin: 16px 0;
+        }
+
+        .detection-time {
+            display: inline-block;
+            background: #3cffd0;
+            color: #000000;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 11px;
+            margin: 8px 0;
+        }
+
+        .highlight-box {
+            background: #2d2d2d;
+            border-left: 4px solid #3cffd0;
+            border-radius: 4px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        .highlight-box strong {
+            color: #3cffd0;
+        }
+
+        .timeline-item {
+            margin: 16px 0;
+            padding: 16px;
+            border: 1px solid #3cffd0;
+            border-radius: 12px;
+            background: #131313;
+        }
+
+        .timeline-item h5 {
+            color: #3cffd0;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+
+        .timeline-item p {
+            color: #949494;
+            font-size: 13px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border: 1px solid #3cffd0;
+            border-radius: 8px;
+        }
+
+        .comparison-table th {
+            background: #2d2d2d;
+            color: #3cffd0;
+            padding: 14px;
+            text-align: left;
+            font-weight: 700;
+            border-bottom: 1px solid #3cffd0;
+            font-size: 13px;
+        }
+
+        .comparison-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #3cffd0;
+            color: #ffffff;
+            font-size: 13px;
+        }
+
+        footer {
+            background: #131313;
+            color: #949494;
+            text-align: center;
+            padding: 32px;
+            border-top: 1px solid #3cffd0;
+            margin-top: 48px;
+            font-size: 12px;
+        }
+
+        footer p {
+            margin: 6px 0;
+        }
+
+        footer a {
+            color: #3cffd0;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 36px;
+            }
+
+            .section-header {
+                font-size: 18px;
+            }
+
+            .container {
+                padding: 24px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="nav-link">← Back to Main</a>
+            <h1>Growth Curve Analysis</h1>
+            <p>Bacterial Growth Phases & Detection Mechanisms</p>
+        </header>
+
+        <!-- Growth Curve Phases -->
+        <div class="section">
+            <div class="section-header">
+                <span>📈</span>
+                Bacterial Growth Curve Phases
+            </div>
+            <div class="section-content">
+                <p style="margin-bottom: 24px; color: #949494;">
+                    The FA-N Series detects growth starting from the LOG PHASE (exponential growth), enabling early results in as little as 1 hour for rapid-growing organisms.
+                </p>
+
+                <div class="chart-container">
+                    <h4>Growth Curve Overview</h4>
+                    <svg class="svg-chart" viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Grid -->
+                        <g stroke="#3cffd0" stroke-width="0.5" opacity="0.3">
+                            <line x1="80" y1="50" x2="80" y2="250" />
+                            <line x1="80" y1="250" x2="750" y2="250" />
+                            <line x1="80" y1="200" x2="750" y2="200" />
+                            <line x1="80" y1="150" x2="750" y2="150" />
+                            <line x1="80" y1="100" x2="750" y2="100" />
+                        </g>
+
+                        <!-- Axes -->
+                        <line x1="80" y1="50" x2="80" y2="250" stroke="#ffffff" stroke-width="2" />
+                        <line x1="80" y1="250" x2="750" y2="250" stroke="#ffffff" stroke-width="2" />
+
+                        <!-- Labels -->
+                        <text x="40" y="150" font-size="11" fill="#949494" text-anchor="end">Log Count</text>
+                        <text x="415" y="275" font-size="11" fill="#949494" text-anchor="middle">Time (hours)</text>
+
+                        <!-- Phase zones -->
+                        <rect x="80" y="50" width="100" height="200" fill="#3cffd0" opacity="0.1" />
+                        <rect x="180" y="50" width="140" height="200" fill="#5200ff" opacity="0.1" />
+                        <rect x="320" y="50" width="140" height="200" fill="#3cffd0" opacity="0.05" />
+                        <rect x="460" y="50" width="140" height="200" fill="#949494" opacity="0.05" />
+
+                        <!-- Curve -->
+                        <path d="M 100 230 Q 140 220 180 160 Q 220 100 260 70 Q 300 60 340 65 Q 400 80 500 120"
+                              stroke="#3cffd0" stroke-width="3" fill="none" />
+
+                        <!-- Phase labels -->
+                        <text x="130" y="275" font-size="10" fill="#3cffd0" font-weight="bold" text-anchor="middle">LAG</text>
+                        <text x="250" y="275" font-size="10" fill="#3cffd0" font-weight="bold" text-anchor="middle">LOG</text>
+                        <text x="390" y="275" font-size="10" fill="#3cffd0" font-weight="bold" text-anchor="middle">STATIONARY</text>
+                        <text x="530" y="275" font-size="10" fill="#3cffd0" font-weight="bold" text-anchor="middle">DEATH</text>
+                    </svg>
+                </div>
+
+                <div class="grid-2">
+                    <div class="timeline-item">
+                        <h5>Phase 1: LAG (0-2 hours)</h5>
+                        <p>Bacteria adjust to environment. Minimal cell division. No CO₂ production. <strong style="color: #ffffff;">NOT detected</strong></p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <h5>Phase 2: LOGARITHMIC (2-6 hours)</h5>
+                        <p>Rapid multiplication. CO₂ & acids produced. pH decreases. <span class="detection-time">1-4 hours</span></p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <h5>Phase 3: STATIONARY (6-7+ hours)</h5>
+                        <p>Growth = death rate. Population stabilizes. <strong style="color: #ffffff;">Confirmed positive</strong></p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <h5>Phase 4: DEATH (7+ hours)</h5>
+                        <p>Cell death > reproduction. Nutrient depletion. <strong style="color: #ffffff;">Maintained positive</strong></p>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <strong>🔑 Key Insight:</strong> The FA-N Series can detect growth starting from LOG PHASE. Early detection algorithms capitalize on the rapid rate of change during exponential growth, enabling results 3-6 hours faster than waiting for stationary phase.
+                </div>
+            </div>
+        </div>
+
+        <!-- Detection Mechanism -->
+        <div class="section">
+            <div class="section-header">
+                <span>🔬</span>
+                Detection Mechanism
+            </div>
+            <div class="section-content">
+                <p style="margin-bottom: 24px; color: #949494;">
+                    Non-invasive colorimetry detects chromogenic film color changes caused by bacterial metabolic byproducts.
+                </p>
+
+                <div class="chart-container">
+                    <h4>How It Works</h4>
+                    <svg class="svg-chart" viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Step 1 -->
+                        <rect x="20" y="20" width="120" height="140" fill="#2d2d2d" stroke="#3cffd0" stroke-width="1" rx="8" />
+                        <text x="80" y="45" font-size="11" font-weight="bold" text-anchor="middle" fill="#3cffd0">Negative</text>
+                        <rect x="40" y="70" width="80" height="30" fill="#333333" stroke="#ffffff" stroke-width="1" rx="2" />
+                        <text x="80" y="92" font-size="9" text-anchor="middle" fill="#949494">Dark Film</text>
+                        <text x="80" y="130" font-size="9" text-anchor="middle" fill="#949494">Low Reflectivity</text>
+
+                        <!-- Arrow -->
+                        <text x="180" y="100" font-size="20" text-anchor="middle" fill="#3cffd0">→</text>
+
+                        <!-- Step 2 -->
+                        <rect x="230" y="20" width="120" height="140" fill="#2d2d2d" stroke="#3cffd0" stroke-width="1" rx="8" />
+                        <text x="290" y="45" font-size="11" font-weight="bold" text-anchor="middle" fill="#3cffd0">Positive</text>
+                        <rect x="250" y="70" width="80" height="30" fill="#3cffd0" stroke="#ffffff" stroke-width="1" rx="2" />
+                        <text x="290" y="92" font-size="9" text-anchor="middle" fill="#000000">Light Film</text>
+                        <text x="290" y="130" font-size="9" text-anchor="middle" fill="#949494">High Reflectivity</text>
+
+                        <!-- Arrow -->
+                        <text x="390" y="100" font-size="20" text-anchor="middle" fill="#3cffd0">→</text>
+
+                        <!-- Step 3 -->
+                        <rect x="440" y="20" width="120" height="140" fill="#2d2d2d" stroke="#3cffd0" stroke-width="1" rx="8" />
+                        <text x="500" y="45" font-size="11" font-weight="bold" text-anchor="middle" fill="#3cffd0">Detection</text>
+                        <circle cx="500" cy="90" r="12" fill="#3cffd0" />
+                        <text x="500" y="95" font-size="9" font-weight="bold" text-anchor="middle" fill="#000000">+</text>
+                        <text x="500" y="130" font-size="9" text-anchor="middle" fill="#949494">POSITIVE</text>
+
+                        <!-- Step 4 -->
+                        <rect x="650" y="20" width="40" height="140" fill="#2d2d2d" stroke="#3cffd0" stroke-width="1" rx="8" />
+                        <text x="670" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="#3cffd0">✓</text>
+                    </svg>
+                </div>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Stage</th>
+                            <th>Process</th>
+                            <th>Result</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>1. Metabolism</strong></td>
+                            <td>Bacteria produce CO₂ from glucose</td>
+                            <td>Acidic byproducts</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2. pH Change</strong></td>
+                            <td>pH drops from acid production</td>
+                            <td>Chromogenic reaction</td>
+                        </tr>
+                        <tr>
+                            <td><strong>3. Color Change</strong></td>
+                            <td>Film changes from dark to light</td>
+                            <td>Reflectivity increases</td>
+                        </tr>
+                        <tr>
+                            <td><strong>4. Detection</strong></td>
+                            <td>Photodetector measures change</td>
+                            <td>POSITIVE result</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Detection Algorithms -->
+        <div class="section">
+            <div class="section-header">
+                <span>⚡</span>
+                Five Detection Algorithms
+            </div>
+            <div class="section-content">
+                <p style="margin-bottom: 24px; color: #949494;">
+                    The FA-N System uses multiple algorithms to detect growth at different rates and detect organisms with various growth patterns.
+                </p>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>🚀 Early Acceleration</h3>
+                        <p><span class="detection-time">1h 20min</span></p>
+                        <p>Detects slope acceleration trend in early culture. For organisms with short lag phases.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>⚡ Early Rate</h3>
+                        <p><span class="detection-time">1 hour</span></p>
+                        <p>Detects slope change for delayed bottles already in growth phase.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>📊 Threshold</h3>
+                        <p><span class="detection-time">1h 40min</span></p>
+                        <p>Detects absolute reflectance reaching critical threshold level.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>📈 Normal Rate</h3>
+                        <p><span class="detection-time">3h 40min</span></p>
+                        <p>Standard detection for bottles loaded on time with normal growth.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>🐢 Slow Growth</h3>
+                        <p><span class="detection-time">6-7+ hours</span></p>
+                        <p>Specialized for fastidious organisms and slow-growing bacteria.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>🎯 Combined</h3>
+                        <p><span class="detection-time">Optimal timing</span></p>
+                        <p>Multi-algorithm approach reports first definitive positive result.</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <strong>🔑 Strategy:</strong> Rather than using a single detection method, FA-N continuously evaluates all applicable algorithms and reports the first definitive positive result, maximizing both speed and sensitivity while maintaining accuracy.
+                </div>
+            </div>
+        </div>
+
+        <!-- Clinical Impact -->
+        <div class="section">
+            <div class="section-header">
+                <span>🏥</span>
+                Clinical Impact
+            </div>
+            <div class="section-content">
+                <div class="grid-2">
+                    <div class="card" style="background: #3cffd0; color: #000000; border-color: #3cffd0;">
+                        <h3 style="color: #000000;">⏱️ Time to Treatment</h3>
+                        <p style="color: #000000;">Traditional: 18-24 hours. FA-N Early Detection: 1-4 hours. <strong>14-20 hours faster therapy initiation.</strong></p>
+                    </div>
+
+                    <div class="card" style="background: #5200ff; color: #ffffff; border-color: #5200ff;">
+                        <h3 style="color: #ffffff;">💊 Antibiotic Stewardship</h3>
+                        <p style="color: #ffffff;">Early detection enables rapid switch from broad-spectrum to targeted therapy, reducing unnecessary antibiotic exposure.</p>
+                    </div>
+
+                    <div class="card" style="background: #3cffd0; color: #000000; border-color: #3cffd0;">
+                        <h3 style="color: #000000;">📊 Sepsis Bundle</h3>
+                        <p style="color: #000000;">Supports <strong>64-minute bundle completion</strong> (vs. 140 minutes in 2014). Blood cultures before antibiotics.</p>
+                    </div>
+
+                    <div class="card" style="background: #5200ff; color: #ffffff; border-color: #5200ff;">
+                        <h3 style="color: #ffffff;">❤️ Mortality Reduction</h3>
+                        <p style="color: #ffffff;">Each hour delay increases septic shock mortality 7.6%. Early detection directly saves lives.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p><strong>FA-N Growth Curve Analysis</strong></p>
+            <p><a href="index.html">← Back to Main Page</a></p>
+            <p style="margin-top: 16px;">© 2025 SE Supply. Information based on clinical research and product documentation.</p>
+        </footer>
+    </div>
+</body>
+</html>
