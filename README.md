@@ -50,6 +50,6 @@ This is a comprehensive resource for sales teams, booth shows, and clinical staf
 - `README.md` - This file
 
 ---
-**Last Updated**: December 2025
+**Last Updated**: June 2026
 **For**: Sales Teams & Booth Show Analyzer
 **Contact**: SE Supply
